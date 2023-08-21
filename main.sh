@@ -1,6 +1,41 @@
 #! /bin/bash
 
+#Ella
+###################################################################
+#check parameters
 
+if [[ "$#" -ne 1 ]] || [[ ! $1 =~ ^[0-9]+$ ]]; then
+echo "Invalid numbers of arguments"
+
+exit 1
+fi
+
+        year=$1
+
+#check if the ##year## is bigger than 1582
+
+        if [ $year -lt 1582 ]; then 
+        echo "Not withing the Gregorian calendar period"
+        exit 1
+        fi
+
+
+#check if the year number is divisible 4
+        if [ $(($year % 4)) -ne 0 ]; then
+        echo "Common year"
+        
+#check if the ##year## number divisible 100
+        elif [ $(($year % 100)) -ne 0 ]; then
+        echo  "Leap year"
+        
+#check if the ##year## number divisble 400
+        elif [ $(($year % 400)) -ne 0 ]; then
+        echo "Common year"
+
+        else echo  "Leap year"
+        fi 
+
+###############################################################
 re='^[0-9]+$'
 # a function to calculate the number of the day in a given year (out of 365 or 366)
 day_of_the_year () { # $1 = year; $2 = month; $3 = day
