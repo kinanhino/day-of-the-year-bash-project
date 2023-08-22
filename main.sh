@@ -39,37 +39,33 @@ month_in_year () {
 ###################################################################
 #check parameters
 leap_year () {
+	# check input validation
 	if [[ "$#" -ne 1 ]] || [[ ! "$1" =~ $re ]]; then
 	echo "Invalid numbers of arguments"
-
 	exit 1
 	fi
 
-		year=$1
-
-	#check if the ##year## is bigger than 1582
-
+	year=$1
+	#check if the year is bigger than 1582
 	if [ $year -lt 1582 ]; then 
 		echo "Not within the Gregorian calendar period"
-		exit 1
-	fi
-
-
+	else
 	#check if the year number is divisible 4
-	if [ $(($year % 4)) -ne 0 ]; then
-		echo "Common year"
-		
-	#check if the ##year## number divisible 100
-	elif [ $(($year % 100)) -ne 0 ]; then
-		echo  "Leap year"
-		
-	#check if the ##year## number divisble 400
-	elif [ $(($year % 400)) -ne 0 ]; then
-		echo "Common year"
+		if [ $(($year % 4)) -ne 0 ]; then
+			echo "Common year"
+			
+		#check if the year number divisible 100
+		elif [ $(($year % 100)) -ne 0 ]; then
+			echo  "Leap year"
+			
+		#check if the year number divisble 400
+		elif [ $(($year % 400)) -ne 0 ]; then
+			echo "Common year"
 
-	else 
-		echo  "Leap year"
-	fi 
+		else 
+			echo  "Leap year"
+		fi 
+	fi
 }
 ###############################################################
 
@@ -110,15 +106,20 @@ day_of_the_year () { # $1 = year; $2 = month; $3 = day
 
 }
 
-#start main
-read -p "enter the year, month and day seperated by space : " -a calendar
-echo ${#calendar[@]}
-if [[ "${#calendar[@]}" -eq "3" ]]; then
+main () {
+	read -p "enter the year, month and day seperated by space : " -a calendar
+	#echo ${#calendar[@]}
+	if [[ "${#calendar[@]}" -eq "3" ]]; then
 
-	year=${calendar[0]}
-	month=${calendar[1]}
-	day=${calendar[2]}
-	day_of_the_year $year $month $day
-else
-	echo "Error: You didnt provide 3 valid numbers seperated by space"
-fi
+		year=${calendar[0]}
+		month=${calendar[1]}
+		day=${calendar[2]}
+		day_of_the_year $year $month $day
+	else
+		echo "Error: You didnt provide 3 valid numbers seperated by space"
+	fi
+
+}	
+
+#start main
+main
