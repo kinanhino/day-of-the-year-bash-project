@@ -2,13 +2,44 @@
 
 re='^[0-9]+$'
 
-
+month_in_year () {
+	if [[ "$#" -ne 2 ]]; then
+		echo "Invalid numbers of arguments"
+		exit 1
+	elif [[ ! "$1" =~ $re ]]; then
+		echo "Error: invalid year" >&2
+		exit 1
+	elif [[ ! "$2" =~ $re ]] || (( $2 > 12 || $2<1  )); then
+		echo "Error: invalid month" >&2
+		exit 1
+	else
+		
+		case $2 in 
+			1|3|5|7|8|10|12)
+				echo 31 ;;
+			4|6|9|11)
+				echo 30 ;;
+			2)
+				is_leap=$(leap_year $1)
+				if [[ "$is_leap" == "Common year" ]]; then
+					echo 28
+				elif [[ "$is_leap" == "Leap year" ]]; then
+					echo 29
+				else
+					echo $is_leap
+					exit 1
+				fi ;;
+			*)
+				echo "your month is not in the right range (1 - 12)" ;;
+		esac
+	fi
+}
 
 #Ella
 ###################################################################
 #check parameters
 leap_year () {
-	if [[ "$#" -ne 1 ]] || [[ ! $1 =~ ^[0-9]+$ ]]; then
+	if [[ "$#" -ne 1 ]] || [[ ! "$1" =~ $re ]]; then
 	echo "Invalid numbers of arguments"
 
 	exit 1
